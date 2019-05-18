@@ -3,6 +3,8 @@ let score;
 let attempts;
 let remaining = 13;
 let targetWord;
+let guess;
+let usedGuesses = [];
 const wordList = [
   "belay",
   "route",
@@ -34,25 +36,60 @@ const wordList = [
 
 // grab ids
 target = document.querySelector("#target");
+changeText = document.querySelector("#changeText");
 
 // watch for events
-window.addEventListener("keyup", gameStart);
+window.addEventListener("keyup", getKey);
 
-function gameStart(e) {
-  console.log(e);
-  game();
-}
-
-function initialWord() {
+function word() {
   targetWord = wordList[Math.floor(Math.random() * wordList.length)]; //?
   console.log(targetWord);
   targetWord.split("").map(ltr => {
     let span = document.createElement("span");
     span.classList = "mx-2";
-    span.id = `${ltr}span`;
+    span.id = `${targetWord.split("").indexOf(ltr)}span`;
     span.appendChild(document.createTextNode("_"));
     target.appendChild(span);
   });
+}
+
+function getKey(e) {
+  if (targetWord) {
+    guess = e.key;
+    // validate input as lowercase letter
+    if (guess.charCodeAt() > 96 && guess.charCodeAt() < 123) {
+      game();
+    } else {
+      // message to user
+      changeText.textContent = "Please enter a lowercase letter to continue.";
+    }
+  } else {
+    word();
+  }
+}
+
+function game() {
+  if (remaining) {
+    if (!usedGuesses.includes(guess)) {
+      usedGuesses.push(guess);
+      if (targetWord.split("").includes(guess)) {
+        console.log(targetWord.split("").filter(match => match === guess));
+      } else {
+        remaining--;
+        console.log(`sorry! ${remaining} guesses left.`);
+      }
+    } else {
+      console.log(`${guess} already used. Try another letter.`);
+    }
+    // for (let j = 0; j < targetWord.length; j++) {
+    //   if (targetWord[j] === event.key) {
+    //     console.log(`${guess} was right!`);
+    //     continue;
+    //   } else {
+    //     remaining--;
+    //     console.log("wrong letter");
+    //   }
+  }
 }
 
 /*/ Pseudocode
