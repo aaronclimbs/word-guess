@@ -9,33 +9,33 @@ let guess;
 let spanArray = [];
 let wordHint;
 const wordList = [
-  ["anchor", "better make these bombproof"],
-  ["arete", "climbing up the corner"],
-  ["belayer", "alex honnold doesn't always need one of these"],
-  ["beta", "don't spray"],
-  ["bomber", "totems"],
-  ["camalot", "C4"],
-  ["chimney", "first few pitches of epinephrine"],
-  ["chock", "nuts"],
-  ["dihedral", "triple-s"],
-  ["flash", "first time, but not an onsight"],
-  ["gaston", "love these moves"],
-  ["heelhook", "always gotta use those heels"],
-  ["highball", "sketchier than trad"],
-  ["leader", "the sharp end"],
-  ["lockoff", "master this and you'll be set"],
-  ["mantel", "fitz caldwell has this down"],
-  ["offwidth", "chicken wings and body jams"],
-  ["pumped", "basically any climb at the RRG"],
-  ["quickdraw", "need this for sport climbing"],
-  ["redpoint", "gotta send"],
-  ["route", "bouldering is stupid"],
-  ["runout", "get that trad head"],
-  ["sidepull", "hope it's a jug"],
-  ["sloper", "definitely not a jug"],
-  ["toprope", "the most badass"],
-  ["traverse", "pitch 15, dawn wall"],
-  ["whipper", "always take the whip"]
+  { word: "anchor", hint: "better make these bombproof" },
+  { word: "arete", hint: "climbing up the corner" },
+  { word: "belayer", hint: "alex honnold doesn't always need one of these" },
+  { word: "beta", hint: "don't spray" },
+  { word: "bomber", hint: "totems" },
+  { word: "camalot", hint: "C4" },
+  { word: "chimney", hint: "first few pitches of epinephrine" },
+  { word: "chock", hint: "nuts" },
+  { word: "dihedral", hint: "triple-s" },
+  { word: "flash", hint: "first time, but not an onsight" },
+  { word: "gaston", hint: "love these moves" },
+  { word: "heelhook", hint: "always gotta use those heels" },
+  { word: "highball", hint: "sketchier than trad" },
+  { word: "leader", hint: "the sharp end" },
+  { word: "lockoff", hint: "master this and you'll be set" },
+  { word: "mantel", hint: "fitz caldwell has this down" },
+  { word: "offwidth", hint: "chicken wings and body jams" },
+  { word: "pumped", hint: "basically any climb at the RRG" },
+  { word: "quickdraw", hint: "need this for sport climbing" },
+  { word: "redpoint", hint: "gotta send" },
+  { word: "route", hint: "bouldering is stupid" },
+  { word: "runout", hint: "get that trad head" },
+  { word: "sidepull", hint: "hope it's a jug" },
+  { word: "sloper", hint: "definitely not a jug" },
+  { word: "toprope", hint: "the most badass" },
+  { word: "traverse", hint: "pitch 15, dawn wall" },
+  { word: "whipper", hint: "always take the whip" }
 ];
 // grab ids
 let target = document.querySelector("#target");
@@ -52,8 +52,8 @@ window.addEventListener("keyup", getKey);
 // select random word and add underscores for each letter
 function word() {
   random = Math.floor(Math.random() * wordList.length);
-  targetWord = wordList[random][0];
-  wordHint = wordList[random][1];
+  targetWord = wordList[random].word;
+  wordHint = wordList[random].hint;
   hintText.textContent = wordHint;
   // console.log(targetWord);
   targetWord.split("").map(ltr => {
@@ -86,6 +86,7 @@ function getKey(e) {
 // spanArray = [];
 
 function game() {
+  changeText.textContent = "Guess the word!";
   spanArray = Array.from(document.querySelectorAll(".word"));
   wordArr = targetWord.split("");
   if (remaining > 0) {
@@ -116,7 +117,7 @@ function game() {
         guessesLeftText.textContent = remaining;
       }
     } else {
-      console.log(`${guess} was already used. Try another letter.`);
+      changeText.textContent = `${guess} was already used. Try another letter.`;
     }
   } else {
     losses++;
@@ -145,7 +146,7 @@ at close of loop run gameOver function
 function checkWin() {
   // check if span arrays still contain any underscores by filtering array
   if (spanArray.filter(item => item.textContent === "_").length === 0) {
-    changeText.textContent = "You won!!";
+    changeText.textContent = `You won!! The word was ${targetWord}`;
     wins++;
     winText.textContent = wins;
     resetGame();
@@ -165,7 +166,9 @@ function resetGame() {
     first.remove();
     first = target.firstElementChild;
   }
-  changeText.textContent = "Press a key to play again!";
+  setTimeout(function() {
+    changeText.textContent = "Press a key to play again!";
+  }, 3000);
   hintText.textContent = "";
 
   // it was important to set the targetWord to a falsy value so that word() would recognize it should generate a new one
