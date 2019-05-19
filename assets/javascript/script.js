@@ -67,7 +67,7 @@ function word() {
 }
 function getKey(e) {
   if (targetWord) {
-    guess = e.key.toLowerCase();
+    guess = e.key;
     // validate input as lowercase letter
     if (guess.charCodeAt() > 96 && guess.charCodeAt() < 123) {
       game();
