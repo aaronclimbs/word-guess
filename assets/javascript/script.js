@@ -222,14 +222,19 @@ function word() {
   wordHint = wordList[random].hint;
   hintText.textContent = wordHint;
   winPicSrc = wordList[random].img;
-  winMsgText = wordList[random].msg;
-  // console.log(targetWord);
+  winMsgText = `${targetWord} -- ${wordList[random].msg}`;
+  console.log(targetWord);
+  let span;
   targetWord.split("").map(ltr => {
-    let span = document.createElement("span");
+    span = document.createElement("span");
     span.classList = "mx-2 word";
     // this may be unnecessary
     // span.id = `${targetWord.split("").indexOf(ltr)}span`;
-    span.appendChild(document.createTextNode("_"));
+    if (ltr === " ") {
+      span.appendChild(document.createTextNode(" "));
+    } else {
+      span.appendChild(document.createTextNode("_"));
+    }
     target.appendChild(span);
   });
 }
@@ -250,12 +255,14 @@ function getKey(e) {
 // for debugging
 // guess = "e";
 // usedGuesses = ["f", "b", "y"];
-// targetWord = "sidepull";
+targetWord = "side pull";
 // spanArray = [];
 
 function game() {
   changeText.textContent = "Guess the word!";
-  spanArray = Array.from(document.querySelectorAll(".word"));
+  spanArray = Array.from(document.querySelectorAll(".word")).filter(
+    ltr => ltr !== " "
+  );
   wordArr = targetWord.split("");
   if (remaining > 0) {
     // check if letter has been used
